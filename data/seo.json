@@ -1,0 +1,28 @@
+{
+    "default": {
+        "title": "Gummadi Groups",
+        "titleTemplate": "%s | Gummadi Groups",
+        "description": "Official parent website for Gummadi Groups and its subsidiaries.",
+        "keywords": [
+            "Gummadi Groups",
+            "Business",
+            "Conglomerate",
+            "Uma Textiles",
+            "Techtools"
+        ],
+        "openGraph": {
+            "type": "website",
+            "locale": "en_US",
+            "url": "https://gummadii.com",
+            "siteName": "Gummadi Groups",
+            "images": [
+                {
+                    "url": "/assets/og-home.jpg",
+                    "width": 1200,
+                    "height": 630,
+                    "alt": "Gummadi Groups"
+                }
+            ]
+        }
+    }
+}

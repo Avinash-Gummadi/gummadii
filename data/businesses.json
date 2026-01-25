@@ -1,0 +1,70 @@
+[
+    {
+        "id": "uma-textiles",
+        "groupId": "gummadi-group",
+        "name": "Uma Textiles & Fancy",
+        "domain": "umatextiles.gummadii.com",
+        "slug": "uma-textiles",
+        "logo": "/assets/uma/logo.png",
+        "shortDescription": "Premium textiles and fancy goods.",
+        "description": "Uma Textiles & Fancy creates high-quality fabrics and fashion accessories for the modern market. We specialize in sustainable weaving and innovative designs.",
+        "services": [
+            {
+                "title": "Fabric Manufacturing",
+                "description": "High volume cotton and synthetic blend production."
+            },
+            {
+                "title": "Retail Distribution",
+                "description": "Direct to consumer fancy goods and accessories."
+            }
+        ],
+        "seo": {
+            "title": "Uma Textiles & Fancy - Gummadi Group",
+            "description": "Leading textile manufacturer and retailer.",
+            "keywords": [
+                "textiles",
+                "fancy",
+                "fabric",
+                "gummadi"
+            ]
+        },
+        "contact": {
+            "email": "contact@umatextiles.com",
+            "phone": "+91-9876543210"
+        }
+    },
+    {
+        "id": "techtools",
+        "groupId": "gummadi-group",
+        "name": "Techtools",
+        "domain": "techtools.gummadii.com",
+        "slug": "techtools",
+        "logo": "/assets/techtools/logo.png",
+        "shortDescription": "Cutting-edge tools for industry professionals.",
+        "description": "Techtools provides precision engineering tools and software solutions for manufacturing and construction industries.",
+        "services": [
+            {
+                "title": "Precision Tooling",
+                "description": "CNC and industrial grade tools."
+            },
+            {
+                "title": "Software Solutions",
+                "description": "Enterprise resource planning for manufacturing."
+            }
+        ],
+        "seo": {
+            "title": "Techtools - Gummadi Group",
+            "description": "Industrial tools and software solutions.",
+            "keywords": [
+                "tools",
+                "tech",
+                "industrial",
+                "software"
+            ]
+        },
+        "contact": {
+            "email": "support@techtools.com",
+            "phone": "+91-1234567890"
+        }
+    }
+]

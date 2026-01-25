@@ -1,0 +1,18 @@
+{
+    "home": {
+        "hero": {
+            "title": "Building the Future, Rooted in Values",
+            "subtitle": "Gummadi Groups is a diversified conglomerate committed to excellence across textiles, technology, and beyond.",
+            "ctaText": "Explore Our Businesses",
+            "ctaLink": "#businesses"
+        },
+        "vision": {
+            "title": "Our Vision",
+            "text": "To act as the foundational root for sustainable business growth, fostering innovation and community development."
+        }
+    },
+    "about": {
+        "title": "About Gummadi Groups",
+        "content": "Gummadi Groups has a rich history of..."
+    }
+}
