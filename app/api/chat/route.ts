@@ -323,7 +323,7 @@ RULES:
       top_p: 1,
       max_tokens: isInvoiceMode ? 2000 : 1000,
     };
-    const response = await client.chat.completions(requestPayload);
+    const response: any = await client.chat.completions(requestPayload);
 
     const rawReply = response.choices[0]?.message?.content ?? "";
     // Strip <think>...</think> blocks emitted by reasoning models (e.g. DeepSeek-R1 via Sarvam)
