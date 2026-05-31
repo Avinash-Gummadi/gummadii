@@ -15,15 +15,70 @@ interface Props {
     businesses: Business[];
 }
 
+// Position config for up to 5 nodes – easy to extend later
+const POSITIONS = [
+    { left: '10%', curveEnd: '10' },   // leftmost
+    { left: '50%', curveEnd: '50' },   // center
+    { left: '90%', curveEnd: '90' },   // rightmost
+];
+
+function BusinessCard({
+    biz,
+    position,
+    index,
+    onHover,
+}: {
+    biz: Business;
+    position: (typeof POSITIONS)[number];
+    index: number;
+    onHover: (id: string | null) => void;
+}) {
+    return (
+        <div
+            className="absolute top-0 -translate-x-1/2 flex justify-center w-80"
+            style={{ left: position.left }}
+        >
+            <Link
+                href={`/businesses/${biz.slug}`}
+                className="group relative flex flex-col items-center w-full"
+                onMouseEnter={() => onHover(biz.id)}
+                onMouseLeave={() => onHover(null)}
+            >
+                {/* Connection dot */}
+                <div className="w-4 h-4 rounded-full bg-amber-600 shadow-lg ring-4 ring-white relative z-10 mb-6 group-hover:scale-125 transition-transform"></div>
+
+                <motion.div
+                    className="w-24 h-24 rounded-full bg-white border-4 border-slate-100 group-hover:border-amber-500 shadow-xl flex items-center justify-center relative z-20 transition-all duration-300 group-hover:scale-110 mb-6 bg-slate-50"
+                    whileHover={{ rotate: 5 }}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.15 }}
+                >
+                    <span className="text-2xl font-bold text-slate-800">{biz.name.substring(0, 2)}</span>
+                </motion.div>
+
+                <div className="bg-white p-8 rounded-3xl shadow-lg border border-slate-100 w-full text-center transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-2">
+                    <h4 className="font-bold text-xl text-slate-900 mb-3">{biz.name}</h4>
+                    <p className="text-sm text-slate-500 leading-relaxed mb-6 line-clamp-2">{biz.shortDescription}</p>
+                    <span className="inline-flex items-center text-xs font-bold text-amber-600 uppercase tracking-widest gap-2 group-hover:gap-3 transition-all">
+                        Explore Entity <span className="text-lg leading-none">&rarr;</span>
+                    </span>
+                </div>
+            </Link>
+        </div>
+    );
+}
+
 export default function EcosystemTree({ businesses }: Props) {
     const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
-    // Root Node
-    const root = {
-        id: 'root',
-        name: 'Gummadi Groups',
-        description: 'The Foundation'
-    };
+    // Map businesses to positions
+    const positions =
+        businesses.length === 1
+            ? [POSITIONS[1]] // center only
+            : businesses.length === 2
+                ? [POSITIONS[0], POSITIONS[2]] // left + right
+                : POSITIONS; // left + center + right
 
     return (
         <div className="relative w-full py-0 min-h-[700px] flex flex-col items-center justify-start overflow-visible">
@@ -42,7 +97,6 @@ export default function EcosystemTree({ businesses }: Props) {
                 </div>
                 <div className="absolute top-full mt-4 left-1/2 -translate-x-1/2 text-center w-48 bg-white/50 backdrop-blur-sm p-2 rounded-xl border border-white/40 shadow-sm z-30">
                     <h3 className="font-bold text-slate-900 text-lg leading-none">Gummadi Groups</h3>
-                    {/* <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Conglomerate Root</p> */}
                 </div>
             </motion.div>
 
@@ -56,101 +110,56 @@ export default function EcosystemTree({ businesses }: Props) {
                         </linearGradient>
                     </defs>
 
-                    {/* 
-               Geometry Match:
-               Left Curve Ends at: x=10, y=95
-               Right Curve Ends at: x=90, y=95
-            */}
+                    {businesses.map((_, i) => {
+                        if (i >= positions.length) return null;
+                        const endX = parseInt(positions[i].curveEnd);
 
-                    {/* Left Curve to 10% */}
-                    {businesses[0] && (
-                        <path
-                            d="M 50 0 C 50 50, 20 20, 10 95"
-                            fill="none"
-                            stroke="url(#curve-gradient)"
-                            strokeWidth="0.8"
-                            vectorEffect="non-scaling-stroke"
-                            strokeLinecap="round"
-                        />
-                    )}
+                        // Center node: slight S-curve so it's visible
+                        if (endX === 50) {
+                            return (
+                                <path
+                                    key={i}
+                                    d="M 50 0 C 48 30, 52 60, 50 95"
+                                    fill="none"
+                                    stroke="url(#curve-gradient)"
+                                    strokeWidth="0.8"
+                                    vectorEffect="non-scaling-stroke"
+                                    strokeLinecap="round"
+                                />
+                            );
+                        }
 
-                    {/* Right Curve to 90% */}
-                    {businesses[1] && (
-                        <path
-                            d="M 50 0 C 50 50, 80 20, 90 95"
-                            fill="none"
-                            stroke="url(#curve-gradient)"
-                            strokeWidth="0.8"
-                            vectorEffect="non-scaling-stroke"
-                            strokeLinecap="round"
-                        />
-                    )}
+                        // Left/right nodes: bezier curves
+                        const cp2x = endX + (endX < 50 ? -10 : 10);
+                        return (
+                            <path
+                                key={i}
+                                d={`M 50 0 C 50 50, ${cp2x} 20, ${endX} 95`}
+                                fill="none"
+                                stroke="url(#curve-gradient)"
+                                strokeWidth="0.8"
+                                vectorEffect="non-scaling-stroke"
+                                strokeLinecap="round"
+                            />
+                        );
+                    })}
                 </svg>
             </div>
 
-            {/* --- Children Nodes Container (Relative for absolute positioning) --- */}
-            <div className="w-full max-w-7xl relative -mt-4 z-10 h-64"> {/* Fixed height for area */}
-
-                {/* Left Child - Positioned exactly at 10% */}
-                {businesses[0] && (
-                    <div className="absolute top-0 left-[10%] -translate-x-1/2 flex justify-center w-80">
-                        <Link
-                            href={`/businesses/${businesses[0].slug}`}
-                            className="group relative flex flex-col items-center w-full"
-                            onMouseEnter={() => setHoveredNode(businesses[0].id)}
-                            onMouseLeave={() => setHoveredNode(null)}
-                        >
-                            {/* Connection Point Top - Aligns with SVG (10%) */}
-                            <div className="w-4 h-4 rounded-full bg-amber-600 shadow-lg ring-4 ring-white relative z-10 mb-6 group-hover:scale-125 transition-transform"></div>
-
-                            <motion.div
-                                className="w-24 h-24 rounded-full bg-white border-4 border-slate-100 group-hover:border-amber-500 shadow-xl flex items-center justify-center relative z-20 transition-all duration-300 group-hover:scale-110 mb-6 bg-slate-50"
-                                whileHover={{ rotate: 5 }}
-                            >
-                                <span className="text-2xl font-bold text-slate-800">{businesses[0].name.substring(0, 2)}</span>
-                            </motion.div>
-
-                            <div className="bg-white p-8 rounded-3xl shadow-lg border border-slate-100 w-full text-center transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-2">
-                                <h4 className="font-bold text-xl text-slate-900 mb-3">{businesses[0].name}</h4>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-6 line-clamp-2">{businesses[0].shortDescription}</p>
-                                <span className="inline-flex items-center text-xs font-bold text-amber-600 uppercase tracking-widest gap-2 group-hover:gap-3 transition-all">
-                                    Explore Entity <span className="text-lg leading-none">&rarr;</span>
-                                </span>
-                            </div>
-                        </Link>
-                    </div>
-                )}
-
-                {/* Right Child - Positioned exactly at 90% */}
-                {businesses[1] && (
-                    <div className="absolute top-0 left-[90%] -translate-x-1/2 flex justify-center w-80">
-                        <Link
-                            href={`/businesses/${businesses[1].slug}`}
-                            className="group relative flex flex-col items-center w-full"
-                            onMouseEnter={() => setHoveredNode(businesses[1].id)}
-                            onMouseLeave={() => setHoveredNode(null)}
-                        >
-                            {/* Connection Point Top - Aligns with SVG (90%) */}
-                            <div className="w-4 h-4 rounded-full bg-amber-600 shadow-lg ring-4 ring-white relative z-10 mb-6 group-hover:scale-125 transition-transform"></div>
-
-                            <motion.div
-                                className="w-24 h-24 rounded-full bg-white border-4 border-slate-100 group-hover:border-amber-500 shadow-xl flex items-center justify-center relative z-20 transition-all duration-300 group-hover:scale-110 mb-6 bg-slate-50"
-                                whileHover={{ rotate: 5 }}
-                            >
-                                <span className="text-2xl font-bold text-slate-800">{businesses[1].name.substring(0, 2)}</span>
-                            </motion.div>
-
-                            <div className="bg-white p-8 rounded-3xl shadow-lg border border-slate-100 w-full text-center transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-2">
-                                <h4 className="font-bold text-xl text-slate-900 mb-3">{businesses[1].name}</h4>
-                                <p className="text-sm text-slate-500 leading-relaxed mb-6 line-clamp-2">{businesses[1].shortDescription}</p>
-                                <span className="inline-flex items-center text-xs font-bold text-amber-600 uppercase tracking-widest gap-2 group-hover:gap-3 transition-all">
-                                    Explore Entity <span className="text-lg leading-none">&rarr;</span>
-                                </span>
-                            </div>
-                        </Link>
-                    </div>
-                )}
-
+            {/* --- Children Nodes --- */}
+            <div className="w-full max-w-7xl relative -mt-4 z-10 h-64">
+                {businesses.map((biz, i) => {
+                    if (i >= positions.length) return null;
+                    return (
+                        <BusinessCard
+                            key={biz.id}
+                            biz={biz}
+                            position={positions[i]}
+                            index={i}
+                            onHover={setHoveredNode}
+                        />
+                    );
+                })}
             </div>
         </div>
     );

@@ -1,0 +1,34 @@
+# Cleanup and Future Optimizations List
+
+This file tracks temporary development items, test credentials, and future architectural improvements for the Gummadii and Professional Invoices project.
+
+## 1. Test Credentials (REMOVE LATER)
+- **Test User 1**: testuser_1772276100297@example.com / testpassword123
+- **Test User 2**: otheruser_[timestamp]@example.com (Created by verify-auth.ts)
+- **Test User 3**: testavi@gmail.com / test123
+- **Test User 4**: testavi2@gmail.com / test2123
+
+## 2. Development Scripts (REMOVE LATER)
+The following scripts in `gummadii/scripts/` were used for verification and connection testing:
+- `test-db.ts`: Basic Supabase connection test.
+- `verify-apis.ts`: Tests all core endpoints for correctness.
+- `verify-auth.ts`: Tests JWT authentication and user data isolation.
+
+## 3. Hybrid Strategy Transition (OPTIMIZE LATER)
+Currently, data lives in both Dexie (local) and PostgreSQL (cloud). Once cloud stability is 100% verified over a few months:
+
+### Professional Invoices (Frontend)
+- **Local DB Schema**: Fields like `syncStatus`, `lastSyncedAt`, and `userId` in `src/lib/db.ts` can be reconsidered if the app moves to a direct-to-cloud model.
+- **SyncManager**: The background polling logic in `src/lib/sync-manager.ts` can be replaced with WebSockets or Realtime (Supabase) for lower latency and better battery efficiency.
+- **Initial Upload Logic**: The `uploadInitialData` function in `SyncManager` is only needed for migrating legacy local users. It can be removed once all active users are on the cloud.
+
+### Gummadii (Backend)
+- **JWT Rotation**: `JWT_SECRET` in `.env` is currently static. Implement rotation or use a more robust OAuth provider (like Supabase Auth directly) to reduce backend maintenance.
+- **Database Indexing**: Add indexes on `user_id` columns in all tables if performance degrades as the user base grows.
+
+## 4. UI/UX Refinements
+- **Login/Signup Labels**: Confirm if "Login" is sufficient or if "Account Settings" should encompass these items.
+- **Auth Store**: Ensure sensitive tokens are handled with maximum security (e.g., Secure Cookies instead of LocalStorage if moving away from standard JWT-in-header).
+
+## 5. Cost Optimization
+- **Batch Syncing**: Optimize `SyncManager` to batch 10+ records into a single API call if users create many items rapidly, reducing database transaction costs.

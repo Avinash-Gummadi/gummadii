@@ -66,5 +66,40 @@
             "email": "support@techtools.com",
             "phone": "+91-1234567890"
         }
+    },
+    {
+        "id": "bills",
+        "groupId": "gummadi-group",
+        "name": "Bills",
+        "domain": "bills.gummadii.com",
+        "slug": "bills",
+        "logo": "/assets/bills/logo.png",
+        "shortDescription": "Smart invoicing and billing solutions.",
+        "description": "Bills provides modern invoicing, billing, and financial management tools for businesses of all sizes. Streamline your billing workflow with ease.",
+        "services": [
+            {
+                "title": "Invoice Management",
+                "description": "Create, send, and track professional invoices effortlessly."
+            },
+            {
+                "title": "Billing Automation",
+                "description": "Automate recurring billing and payment reminders."
+            }
+        ],
+        "seo": {
+            "title": "Bills - Gummadi Group",
+            "description": "Smart invoicing and billing solutions for businesses.",
+            "keywords": [
+                "bills",
+                "invoicing",
+                "billing",
+                "payments",
+                "gummadi"
+            ]
+        },
+        "contact": {
+            "email": "support@bills.gummadii.com",
+            "phone": "+91-9876543211"
+        }
     }
 ]

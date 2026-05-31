@@ -3,6 +3,7 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Chatbot from "@/components/Chatbot";
 import { getSEO } from "@/lib/json-loader";
 
 const outfit = Outfit({
@@ -13,14 +14,26 @@ const outfit = Outfit({
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSEO();
   return {
-    metadataBase: new URL('http://localhost:3000'), // Should be configured via env in prod
+    metadataBase: new URL('https://gummadii.com'),
     title: {
       default: seo.default.title,
       template: seo.default.titleTemplate,
     },
     description: seo.default.description,
     keywords: seo.default.keywords,
-    openGraph: seo.default.openGraph,
+    icons: {
+      icon: '/logo.png',
+      apple: '/logo.png',
+    },
+    openGraph: {
+      ...seo.default.openGraph,
+      images: [
+        {
+          url: '/logo.png',
+          alt: seo.default.title,
+        },
+      ],
+    },
   };
 }
 
@@ -39,6 +52,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Chatbot />
       </body>
     </html>
   );
