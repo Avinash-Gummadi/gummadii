@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
         const result = await query(sql);
 
         // Analyze and aggregate cluster data
-        const users = result.rows.map(row => ({
+        const users = (result?.rows || []).map(row => ({
             accountId: row.account_id,
             globalid: row.globalid,
             companyName: row.company_name || 'N/A',

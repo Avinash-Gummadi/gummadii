@@ -53,6 +53,7 @@ export const query = async (text: string, params?: any[], retries = 3) => {
             throw error;
         }
     }
+    throw new Error('Database query failed after all retries');
 };
 
 export default pool;
