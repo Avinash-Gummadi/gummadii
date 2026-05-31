@@ -317,7 +317,7 @@ RULES:
   // ── Call Sarvam AI ──
   try {
     const requestPayload: any = {
-      model: "sarvam-2b-v0.5", // Required by newer versions of sarvamai SDK on Vercel
+      model: "sarvam-m", // Required by newer versions of sarvamai SDK on Vercel
       messages,
       temperature: isInvoiceMode ? 0.2 : 0.5, // Lower temperature for structured output
       top_p: 1,
