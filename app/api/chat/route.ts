@@ -316,12 +316,14 @@ RULES:
 
   // ── Call Sarvam AI ──
   try {
-    const response = await client.chat.completions({
+    const requestPayload: any = {
+      model: "sarvam-2b-v0.5", // Required by newer versions of sarvamai SDK on Vercel
       messages,
       temperature: isInvoiceMode ? 0.2 : 0.5, // Lower temperature for structured output
       top_p: 1,
       max_tokens: isInvoiceMode ? 2000 : 1000,
-    });
+    };
+    const response = await client.chat.completions(requestPayload);
 
     const rawReply = response.choices[0]?.message?.content ?? "";
     // Strip <think>...</think> blocks emitted by reasoning models (e.g. DeepSeek-R1 via Sarvam)
