@@ -32,3 +32,8 @@ Currently, data lives in both Dexie (local) and PostgreSQL (cloud). Once cloud s
 
 ## 5. Cost Optimization
 - **Batch Syncing**: Optimize `SyncManager` to batch 10+ records into a single API call if users create many items rapidly, reducing database transaction costs.
+
+
+
+'https://upload.wikimedia.org/wikipedia/commons/7/76/Noise.png' is not there. know for what it is and keep direct image/icon
+in razorpay modal filling username because of that email is coming in the field of Enter name on the card. don't do this. user will enter it
